@@ -63,7 +63,7 @@ export const convertCollectionsSnapshotToMap = (collections) => {
       routeName: encodeURI(title.toLowerCase()),
       id: doc.id,
       title,
-      items
+      items 
     }
   });
 
@@ -76,8 +76,17 @@ export const convertCollectionsSnapshotToMap = (collections) => {
 export const auth = firebase.auth();
 export const firestore = firebase.firestore();
 
-const provider = new firebase.auth.GoogleAuthProvider();
-provider.setCustomParameters({ prompt: "select_account" });
-export const signInWithGoogle = () => auth.signInWithPopup(provider);
+export const getCurrentUser = () => {
+  return new Promise((resolve, reject) => {
+    const unsubsrcibe = auth.onAuthStateChanged(userAuth => {
+      unsubsrcibe();
+      resolve(userAuth);
+    }, reject)
+  });
+}
+
+export const googleProvider = new firebase.auth.GoogleAuthProvider();
+googleProvider.setCustomParameters({ prompt: 'select_account' });
+export const signInWithGoogle = () => auth.signInWithPopup(googleProvider);
 
 export default firebase;
